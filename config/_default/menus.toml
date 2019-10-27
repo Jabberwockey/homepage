@@ -5,51 +5,60 @@
 
 [[languages.de.menu.main]]
   name = "Home"
+  identifier = "about"
   url = "#about"
   weight = 10
 
 [[languages.en.menu.main]]
   name = "Home"
+  identifier = "about"
   url = "#about"
   weight = 10
 
 [[languages.de.menu.main]]
   name = "Artikel"
+  identifier = "posts"
   url = "#posts"
   weight = 20
 
 [[languages.en.menu.main]]
   name = "Posts"
+  identifier = "posts"
   url = "#posts"
   weight = 20
 
 [[languages.de.menu.main]]
   name = "Projekte"
+  identifier = "projects"
   url = "#projects"
   weight = 30
 
 [[languages.en.menu.main]]
   name = "Projects"
+  identifier = "projects"
   url = "#projects"
   weight = 30
 
-[[languages.de.menu.main]]
-  name = "Veröffentlichungen"
-  url = "#featured"
-  weight = 40
+# [[languages.de.menu.main]]
+#   name = "Veröffentlichungen"
+#   identifier = "featured"
+#   url = "#featured"
+#   weight = 40
 
-[[languages.en.menu.main]]
-  name = "Publications"
-  url = "#featured"
-  weight = 40
+# [[languages.en.menu.main]]
+#   name = "Publications"
+#   url = "#featured"
+#   weight = 40
 
 [[languages.de.menu.main]]
   name = "Kontakt/Impressum"
+  identifier = "contact"
   url = "#contact"
   weight = 60
 
 [[languages.en.menu.main]]
   name = "Contact/Imprint"
+  identifier = "contact"
   url = "#contact"
   weight = 60
 
