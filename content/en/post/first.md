@@ -1,5 +1,5 @@
 ---
-categories: ["html" "web" "javascript" "server" "cloud"]
+categories: ["html", "web", "javascript", "server", "cloud"]
 comments: true
 title: "Moving to Netlify"
 date: "2019-10-27T11:31:00+01:00"
