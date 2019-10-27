@@ -10,7 +10,7 @@ authors:
 superuser: true
 
 # Role/position
-role: Software architect
+role: Softwarearchitekt
 
 # Organizations/Affiliations
 organizations:
