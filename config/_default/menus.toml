@@ -3,37 +3,37 @@
 #     desired widget in your `content/home/` folder.
 #   The weight parameter defines the order that the links will appear in.
 
-[[main]]
+[[languages.de.main]]
   name = "Home"
   identifier = "about"
   url = "#about"
   weight = 10
 
-# [[languages.en.main]]
-#   name = "Home"
-#   identifier = "about"
-#   url = "#about"
-#   weight = 10
+[[languages.en.main]]
+  name = "Home"
+  identifier = "about"
+  url = "#about"
+  weight = 10
 
-# [[languages.de.main]]
-#   name = "Artikel"
-#   identifier = "posts"
-#   url = "#posts"
-#   weight = 20
+[[languages.de.main]]
+  name = "Artikel"
+  identifier = "posts"
+  url = "#posts"
+  weight = 20
 
-[[main]]
+[[languages.en.main]]
   name = "Posts"
   identifier = "posts"
   url = "#posts"
   weight = 20
 
-# [[languages.de.main]]
-#   name = "Projekte"
-#   identifier = "projects"
-#   url = "#projects"
-#   weight = 30
+[[languages.de.main]]
+  name = "Projekte"
+  identifier = "projects"
+  url = "#projects"
+  weight = 30
 
-[[main]]
+[[languages.en.main]]
   name = "Projects"
   identifier = "projects"
   url = "#projects"
@@ -50,13 +50,13 @@
 #   url = "#featured"
 #   weight = 40
 
-# [[languages.de.main]]
-#   name = "Kontakt/Impressum"
-#   identifier = "contact"
-#   url = "#contact"
-#   weight = 60
+[[languages.de.main]]
+  name = "Kontakt/Impressum"
+  identifier = "contact"
+  url = "#contact"
+  weight = 60
 
-[[main]]
+[[languages.en.main]]
   name = "Contact/Imprint"
   identifier = "contact"
   url = "#contact"
