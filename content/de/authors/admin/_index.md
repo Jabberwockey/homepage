@@ -14,26 +14,26 @@ role: Software architect
 
 # Organizations/Affiliations
 organizations:
-- name: thyssenKrupp Steel Europe
+- name: ""
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: I'm a software developer by day, a writer by night and an adventurer in my spare time.
+bio: Softwareentwickler bei Tag, Schriftsteller bei Nacht und Abenteurer in meiner Freizeit.
 
 interests:
-- Software development
-- Artificial Intelligence
-- Writing
-- Philosophy
+- Softwareentwicklung
+- Künstliche Intelligenz
+- Schriftstellerei
+- Philosophie
 - LARP
-- Photography
+- Fotografie
 
 education:
   courses:
-  - course: Diplom Informatik (eq. Master of Science in CS)
+  - course: Diplom Informatik
     institution: FernUniversität Hagen
     year: 2011
-  - course: Vordiplom Informatik (eq. Bachelor of Science in CS)
+  - course: Vordiplom Informatik
     institution: University of Hamburg
     year: 2003
 
@@ -54,6 +54,15 @@ social:
 - icon: github
   icon_pack: fab
   link: https://github.com/Jabberwockey
+- icon: hackerrank
+  icon_pack: fab
+  link: https://www.hackerrank.com/VorpalCoder
+- icon: reddit
+  icon_pack: fab
+  link: https://www.reddit.com/user/Jabberwockey
+- icon: facebook
+  icon_pack: fab
+  link: https://www.facebook.com/Jabberwockey
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.  
 # - icon: cv
@@ -70,7 +79,9 @@ user_groups:
 - Visitors
 ---
 
-Jens Grabarske is a software developer and author in Duisburg, Germany. His interests include artificial intelligence,
-software engineering in general, languages, fantasy, science fiction, LARP and philosophy, not always in that order.
+Jens Grabarske ist ein Softwareentwickler und Autor in Duisburg, Deutschland. Er interessiert sich für Künstliche
+Intelligenz, Softwareentwicklung im Allgemeinen, Sprachen, Fantasy, Science Fiction, Liverollenspiel und
+Philosophie, nicht notwendigerweise in dieser Reihenfolge.
 
-In the past, he has worked as a freelance developer and trainer.
+In der Vergangenheit hat er als freiberuflicher Entwickler und Trainer gearbeitet.
+

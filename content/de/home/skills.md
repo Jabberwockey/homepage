@@ -108,7 +108,14 @@ subtitle = ""
 [[feature]]
   icon = "camera-retro"
   icon_pack = "fas"
-  name = "Photography"
-  description = "10%"
+  name = "Fotografie"
+  description = ""
+  
+[[feature]]
+  icon = "book"
+  icon_pack = "fas"
+  name = "Schreiben"
+  description = ""
+
 
 +++
