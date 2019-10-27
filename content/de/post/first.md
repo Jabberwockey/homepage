@@ -24,7 +24,7 @@ irgendeinen Editor, öffne eine Datei und fange an zu schreiben:
 ```
 
 Wir hatten ja nichts, damals. Als ich mit dem Kram anfing, da gab es zwar schon CSS, aber
-es diente im wesentlichen dazu, eine ohnehin unlösbare Aufgabe noch komplizierter und noch
+es diente im Wesentlichen dazu, eine ohnehin unlösbare Aufgabe noch komplizierter und noch
 unlösbarer zu machen, nämlich eine Webseite auf zwei verschiedenen Browsern anzuzeigen, deren
 Hersteller gar kein Interesse daran haben, dass es überall gleich aussieht.
 
