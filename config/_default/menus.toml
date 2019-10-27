@@ -3,52 +3,52 @@
 #     desired widget in your `content/home/` folder.
 #   The weight parameter defines the order that the links will appear in.
 
-[[languages.de.main]]
+[[languages.de.menu.main]]
   name = "Home"
   url = "#about"
   weight = 10
 
-[[languages.en.main]]
+[[languages.en.menu.main]]
   name = "Home"
   url = "#about"
   weight = 10
 
-[[languages.de.main]]
+[[languages.de.menu.main]]
   name = "Artikel"
   url = "#posts"
   weight = 20
 
-[[languages.en.main]]
+[[languages.en.menu.main]]
   name = "Posts"
   url = "#posts"
   weight = 20
 
-[[languages.de.main]]
+[[languages.de.menu.main]]
   name = "Projekte"
   url = "#projects"
   weight = 30
 
-[[languages.en.main]]
+[[languages.en.menu.main]]
   name = "Projects"
   url = "#projects"
   weight = 30
 
-[[languages.de.main]]
+[[languages.de.menu.main]]
   name = "Veröffentlichungen"
   url = "#featured"
   weight = 40
 
-[[languages.en.main]]
+[[languages.en.menu.main]]
   name = "Publications"
   url = "#featured"
   weight = 40
 
-[[languages.de.main]]
+[[languages.de.menu.main]]
   name = "Kontakt/Impressum"
   url = "#contact"
   weight = 60
 
-[[languages.en.main]]
+[[languages.en.menu.main]]
   name = "Contact/Imprint"
   url = "#contact"
   weight = 60
