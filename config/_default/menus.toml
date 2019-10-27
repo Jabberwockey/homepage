@@ -56,7 +56,7 @@
 #   url = "#contact"
 #   weight = 60
 
-[[languages.en.menu.main]]
+[[menu.main]]
   name = "Contact/Imprint"
   identifier = "contact"
   url = "#contact"
