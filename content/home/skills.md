@@ -15,17 +15,96 @@ subtitle = ""
 # For available icons, see: https://sourcethemes.com/academic/docs/widgets/#icons
 
 [[feature]]
-  icon = "r-project"
+  icon = "angular"
   icon_pack = "fab"
-  name = "R"
-  description = "90%"
+  name = "Angular"
+  description = ""
   
 [[feature]]
-  icon = "chart-line"
-  icon_pack = "fas"
-  name = "Statistics"
-  description = "100%"  
+  icon = "bootstrap"
+  icon_pack = "fab"
+  name = "Bootstrap"
+  description = ""  
   
+[[feature]]
+  icon = "css3-alt"
+  icon_pack = "fab"
+  name = "CSS3"
+  description = ""  
+
+[[feature]]
+  icon = "git-alt"
+  icon_pack = "fab"
+  name = "Git"
+  description = ""  
+
+[[feature]]
+  icon = "java"
+  icon_pack = "fab"
+  name = "Java"
+  description = ""  
+
+[[feature]]
+  icon = "jenkins"
+  icon_pack = "fab"
+  name = "Jenkins"
+  description = ""  
+
+[[feature]]
+  icon = "jira"
+  icon_pack = "fab"
+  name = "Jira"
+  description = ""  
+
+[[feature]]
+  icon = "less"
+  icon_pack = "fab"
+  name = "Less"
+  description = ""  
+
+[[feature]]
+  icon = "linux"
+  icon_pack = "fab"
+  name = "Linux"
+  description = ""  
+
+[[feature]]
+  icon = "markdown"
+  icon_pack = "fab"
+  name = "Markdown"
+  description = ""  
+
+[[feature]]
+  icon = "node-js"
+  icon_pack = "fab"
+  name = "Node"
+  description = ""  
+
+[[feature]]
+  icon = "php"
+  icon_pack = "fab"
+  name = "PHP"
+  description = ""  
+
+[[feature]]
+  icon = "python"
+  icon_pack = "fab"
+  name = "Python"
+  description = ""  
+
+[[feature]]
+  icon = "react"
+  icon_pack = "fab"
+  name = "React"
+  description = ""  
+
+[[feature]]
+  icon = "sass"
+  icon_pack = "fab"
+  name = "SASS"
+  description = ""  
+
+
 [[feature]]
   icon = "camera-retro"
   icon_pack = "fas"
