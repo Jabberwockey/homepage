@@ -304,7 +304,7 @@ called and the expanded nodes are added to the queue.
 
 Is this already closed for modification?
 
-Not quite. There is something still missing.
+Not quite. Something is still missing.
 
 In every graph search, you need to be careful to make sure that you do
 not run into circles. And if you are looking for your next chess move, you

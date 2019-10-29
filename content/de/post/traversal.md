@@ -1,7 +1,7 @@
 ---
 categories: ["programming", "Lisp", "Java", "algorithms", "data structures", "queues"]
 comments: true
-title: "Rethinking search and traversal - Part 1 - Cool things with Java"
+title: "Suche und Traversierung neu gedacht - Teil 1 - Coole Sachen mit Java"
 date: "2019-10-29T14:31:00+01:00"
 slug: ""
 draft: ""
@@ -9,15 +9,13 @@ markup: mmark
 diagram: true
 ---
 
-*Dieser Artikel ist derzeit nur auf Englisch verfügbar. Vielleicht werde ich ihn mal
-übersetzen, aber bis dahin ist hier das englischsprachige Original.*
+Einer der beeindruckendsten Dinge, die ich auf der Universität gelernt hatte, die mir
+wirklich den Verstand gesprengt hatte, war, dass das Verhalten einer Suche nur davon
+abhängt, welche Art von Queue verwendet wird.
 
-One of the most mind-blowing things I learned at university was that the behaviour of
-a search can be determined by the kind of queue that is being used.
+Anders gesagt, es war dieses Skelett für eine allgemeine Suche:
 
-In other words, it was this skeleton for a general search:
-
-```sbcl
+```lisp
 (defun search (start expand-fn goal-fn enqueue-fn dequeue-fn)
   (funcall enqueue-fn start)
   (loop for elm in (funcall dequeue-fn)
@@ -27,50 +25,51 @@ In other words, it was this skeleton for a general search:
 		  (mapcar enqueue-fn (funcall expand-fn elm)))))
 ```
 
-For all you people who think that Lisp is just a random number of
-parens (and for the Scheme programmers who think that Common Lisp
-is just unelegant), here's what this kind of code does:
+Für all die Leute da draußen die denken, dass Lisp nur eine wahllose
+Sammlung von Klammern ist (und für Scheme-Programmierer, die denken,
+dass Common Lisp einfach nur unelegant ist), der obige Code macht folgendes:
 
-1. It takes functions to enqueue and dequeue elements from, well, a queue.
-2. It takes functions to derive further nodes to be visited and a function to tell whether a node is a goal or not.
-3. While the goal hasn't been found yet, it expands nodes and enqueues those children, using the queue as the sole source for the traversal.
+1. Es nimmt Funktionen um Dinge aus einer, naja, Queue, herauszuholen und einzureihen
+2. Es nimmt Funktionen um festzustellen welche weiteren Knoten besucht werden müssen und eine Funktion um festzustellen, welches ein Zielknoten ist oder nicht
+3. Während das Ziel noch nicht gefunden wurde, expandiert es fröhlich Knoten und reiht diese in die Queue ein. Die Queue ist die einzige Quelle für die Iteration
 
-Now: whether this is a depth-first search or a breadth-first search or a best-first search depends on the queue functions we
-passed to this piece of code.
+Jetzt: ob dies nun eine Tiefensuche, eine Breitensuche oder eine Best-First-Suche ist, hängt nur davon ab, was für Queue-Funktionen an dieses
+Stück Code übergeben werden.
 
-I.e.: if we use a stack (a FILO queue), then this function will carry out a depth-first search. If we use a regular queue (a FIFO queue), then
-this will be a breadth-first search. And if we use a priority queue, this will be a best-first search.
+Sprich: wenn wir einen Stack verwenden (eine FILO-Queue), dann wird diese Suche eine Tiefensuche durchführen. Wenn wir eine reguläre Queue
+(eine FIFO-Queue) verwenden, dann wird es eine Breitensuche. Und wenn wir eine Priority-Queue verwenden, dann wird es eine Best-First-Suche.
 
-That means: the main search algorithm is *independent* of the search strategy used! The behaviour is plugged in and can be exchanged.
+Das bedeutet: der Hauptsuchalgorithmus ist *unabhängig* von der verwendeten Suchstrategie! Das Verhalten ist ein Parameter und kann leicht ausgetauscht werden.
 
-Yeah. Mind blown.
+Ja. Kopf gesprengt.
 
-Of course, as a seasoned programmer (I think I can call myself that, I have the grey hair to prove it), I know that this is
-a perfect example for the principle
+Natürlich, als erfahrener Programmierer (ich denke, ich kann mich so nennen, ich habe die grauen Haare um das zu beweisen) weiß ich, dass das
+ein perfektes Beispiel ist für das Prinzip
 
-> Closed for modification, open for extension.
+> Abgeschlossen für Veränderung, offen für Erweiterung.
 
-We want algorithms like that. We want to have systems that can easily be extended with behaviour we need, while the main
-core algorithm is as closed as possible - as in: never needs to be touched by grabby, filthy little developer hands again,
-at least not in our lifetime - or at least until we quit and run away from the code base as quickly as possible.
+Wir wollen solche Algorithmen. Wir wollen Systeme, die sich einfach durch das Verhalten erweitern lassen, das wir brauchen,
+während der Kernalgorithmus so geschlossen wie möglich ist und nie wieder von schmutzigen Grabbelfingern von kleinen
+Entwicklerhänden angetatscht werden müssen, zumindest nicht während unserer Lebenszeit - oder zumindest bis wir
+kündigen und schnell das Weite suchen.
 
-However, rethinking this, it is apparent that the search idea doesn't even go far enough. It's good to be able to guide
-the traversal of a data structure with queues in general, without specifically looking for something. In other words:
-the search itself is just an application of a broader algorithm having to do with iteration.
+Aber, noch einmal gründlicher nachgedacht, so ist es offensichtlich, dass diese Suchidee gar nicht mal weit genug geht.
+Es ist gut, dass wir das Traversieren einer Datenstruktur mit Queues steuern können, ohne überhaupt nach etwas zu suchen.
+Anders gesagt: die Suche selbst ist nur eine Anwendung eines breiteren Algorithmuses, der mit Iteration zu tun hat.
 
-Let's see how we can apply this in Java programming. Don't worry, I will do that in other languages as well.
+Lasst uns mal sehen, wie man das in Java verwenden kann. Keine Sorge, ich werde das auch in anderen Sprachen machen.
 
 # Java - Queued Iterator
 
-The newer Java versions introduced the Java Streams API which is the "new shit" and used in a frenzy by the same people
-who told me years earlier, that functional programming doesn't have any practical applications whatsoever (to be fair, it
-didn't have any in Java at that time, but I digress).
+Die neueren Java-Versionen haben die Java-Streams-API eingeführt und das ist der neue heiße Scheiß und wird krampfhaft
+von denselben Leuten verwendet, die mir vor Jahren erzählt hatten, dass funktionale Programmierung überhaupt keine
+praktischen Anwendungen hat (um fair zu bleiben, damals hatte es keine in Java, aber das nur nebenbei).
 
-Don't get me wrong, the Java Streams API and lambda expressions and all the new fancy stuff is a step in the right
-direction and makes for much clearer and concise programming, despite all the nay-sayers.
+Versteht mich nicht falsch, die Java-Streams-API und Lambda-Ausdrücke und all das neue krasse Zeug ist ein Schritt in
+die richtige Richtung und es hilft, klarer und deutlicher zu programmieren, ungeachtet all der Nein-Sager.
 
-But one should remember that at its core, there is a rather old class at work that is used for iterations since
-Java 5 and 6: Iterator. Yeah, the one that powers your good old for-loops like
+Aber man sollte nicht vergessen dass im Kern eine ziemlich alte Klasse arbeitet, die für Iterationen seit Java 5 und 6
+verwendet wird: Iterator. Ja, das Ding, das diese guten, alten for-Schleifen bedient wie
 
 ```java
 List<String> strs;
@@ -80,7 +79,7 @@ for (String str : strs) {
 }
 ```
 
-Or, worse even, the manual while-loops done by some old geezers, like
+Oder, noch schlimmer, diese manuellen while-Schleifen von alten Greisen, wie
 
 ```java
 Iterator<String> iterator = strs.iterator();
@@ -89,46 +88,47 @@ while (iterator.hasNext()) {
 }
 ```
 
-You know. The really boring, really old-school stuff.
+Ihr wisst schon. Das echt langweilige, wirklich old-school Zeug.
 
-But bear with me. We'll get to the new, cool, hip stuff in due time.
+Aber Geduld. Wir kommen schon noch zu dem neuen, hippen Zeug zu sprechen.
 
-## A queue by any other name?
+## Eine Queue gleich welchen Namens?
 
-First I need to rant a little about Java. Or, more specifically, about
-certain design decisions done by Java.
+Erst muss ich ein wenig meinen Frust über Java Luft machen. Oder, genauer,
+über ein paar der Design-Entscheidungen von Java.
 
-In my Lisp code above, we only needed to tell my search function which
-enqueue and dequeue functions we needed to work properly. That is because
-in Lisp, queues and stacks and priority queues basically work the same,
-the only difference is, which element the dequeue function returned.
+In meinem Lisp-Code mussten wir der Suchfunktion nur mitteilen welche
+enqueue und dequeue Funktionen wir brauchten um ordentlich arbeiten zu
+können. Das lag daran, dass in Lisp Queues und Stacks und Priority-Queues
+im Wesentlichen gleich arbeiten und der einzige Unterschied ist, welches
+Element die dequeue-Funktion ausspuckt.
 
-While modern Java versions allow passing function arguments as well, it's
-not that simple, as the behaviour is slightly different.
+Moderne Java-Versionen erlauben zwar nun auch Funktionsargumente, aber
+es ist nicht ganz so einfach hier, da das Verhalten anders ist.
 
-You see, Java knows PriorityQueue, Stack and a flavour of Queue, let's say
-a simple LinkedList (as that implements the Queue interface as well).
+Denn Java kennt PriorityQueue, Stack und irgendeine Geschmacksrichtung
+von Queue, sagen wir mal eine einfache LinkedList (das ebenfalls das
+Queue-Interface erbt).
 
-Enqueueing is easy enough. All of these classes support the "add()" function.
-You could use "push()" for Stack, but it doesn't do anything different from
-"add()".
+Einqueuen ist einfach genug. Alle diese Klassen unterstützen die "add()"-
+Funktion. Man könnte für den Stack "push()" verwenden, aber das macht
+auch nichts anderes als "add()".
 
-Dequeueing however is a different beast. For Queue it's "poll()". And if the
-queue is empty, that will return null. For Stack it's "pop()". And if the
-stack is empty, it will throw an exception.
+Auslesen ist aber ein anderes Tier. Für Queue ist das "poll()" und wenn
+die Queue leer ist, dann gibt das null zurück. Für Stack ist es "pop()" und
+wenn der Stack leer ist, dann wirft das eine Exception.
 
-That is a bit annoying. If we want our iteration / traversal mechanism to
-be agnostic of the used queue, all the queues should behave the same way and
-have the same API.
+Das nervt etwas. Wenn wir unseren Iterations- / Traversierungsmechanismus
+agnostisch machen wollen bezüglich der zugrundeliegende Queue, dann sollten
 
-Ok, I admit it, that wasn't that much of a rant. Not in the mood.
+Gut, zugegeben, das war jetzt gar nicht so stark aufgeregt. Nicht in der Stimmung.
 
-Thankfully, the preferred style in Java is still OOP and there is a simple
-solution in our arsenal of design patterns: adapters. We define how this uniform
-API is supposed to look like and then we design classes that bridge the gap
-between the two different behaviours and APIs.
+Glücklicherweise ist der präferierte Stil in Java immer noch OOP und da gibt
+es eine einfache Lösung in unserem Arsenal an Design-Patterns: Adapter.
+Wir definieren wie diese uniforme API aussehen sollte und wir entwickeln
+Klassen, die den Unterschied in Verhalten und API ausgleichen.
 
-For queues, we pretty much need what the ADT of queues asks for:
+Für Queues brauchen wir einfach nur, was der ADT verlangt, nämlich:
 
 ```java
 public interface QueueAdapter<T> {
@@ -138,25 +138,27 @@ public interface QueueAdapter<T> {
 }
 ```
 
-The keen reader will have noticed that the first two functions look awfully
-familiar. They are actually exactly what an Iterator gives us! Looking at the ADT,
-we can say that a queue is nothing else but an iterator that allows for additional
-elements to be traversed to be added on the fly.
+Der aufmerksame Leser wird festgestellt haben, dass die ersten zwei Funktionen
+uns erschreckend bekannt vorkommen. Das ist eigentlich exakt das, was uns
+ein Iterator gibt! Wenn wir einfach den ADT ansehen, dann ist eine Queue nichts
+anderes als ein Iterator, dem zusätzliche Elemente zum Traversieren und Besuchen
+on the fly hinzugefügt werden können.
 
-What a way to think about that! To reflect this new idea, let's rewrite the interface
-to tell other programmers about this idea of ours:
+Das ist mal eine Art, darüber nachzudenken! Um diese Idee widerzuspiegeln, lasst uns
+das Interface umschreiben um anderen Programmierern diese Idee zu vermitteln:
 
 ```java
 public interface QueueAdapter<T> extends Iterator<T>, Consumer<T> {
 }
 ```
 
-Does that sound correct?
+Klingt das richtig?
 
-A queue is for traversing through "waiting" crowds, so yes, it sounds apt to call it an iterator.
-But a queue also accepts new elements all the time. So it is also a consumer of items.
+Eine Queue ist etwas um durch eine "wartende" Menge durchzutraversieren, also ja, es klingt
+richtig, sie einen Iterator zu nennen. Aber diese Queue erlaubt auch ständig neue Elemente
+für das Traversieren, also ist es auch ein Konsument von Dingen.
 
-Let's see how such an adapter could look like:
+Lasst uns mal sehen, wie ein solcher Adapter dann aussehen könnte:
 
 ```java
 public class StackAdapterImpl<T> implements QueueAdapter<T> {
@@ -178,7 +180,7 @@ public class StackAdapterImpl<T> implements QueueAdapter<T> {
 }
 ```
 
-And for queues:
+Und für Queues:
 
 ```java
 public class QueueAdapterImpl<T> implements QueueAdapter<T> {
@@ -203,7 +205,7 @@ public class QueueAdapterImpl<T> implements QueueAdapter<T> {
 }
 ```
 
-And finally for priority queues:
+Und schließlich für Priority-Queues:
 
 ```java
 public class PriorityQueueAdapterImpl<T> implements QueueAdapter<T> {
@@ -228,41 +230,44 @@ public class PriorityQueueAdapterImpl<T> implements QueueAdapter<T> {
 }
 ```
 
-Gna, I hate copy \& paste programming, but in this case, there are no good ways around it
-(if you have an idea, pop me a line). Thankfully, this is the only bit of that we need
-to do.
+Gna, ich hasse Copy-\&-Paste-Programmierung, aber in diesem Fall gibt es keine guten Ansätze
+drum herum (wenn ihr eine Idee habt, schreibt mir ruhig). Glücklicherweise ist das die
+einzige Stelle, wo wir das so exzessiv tun müssen.
 
-Now that we have our queue adapters, we need to talk about nodes.
+Jetzt, wo wir das haben, sollten wir einmal über Knoten reden.
 
-## Nodes
+## Knoten
 
-A node in a search problem can be anything. It can be an actual node as in a tree or
-a graph, but it can also be an abstract node as in: a specific position in our
-search tree.
+Ein Knoten in einem Suchproblem kann alles sein. Es kann ein tatsächlicher Knoten in
+einem Baum oder einem Graphen sein, aber es kann auch ein abstrakter Knoten sein, wie
+eine bestimmte Position in unserem Suchbaum.
 
-For example, it is not apparent when you are writing a chess program that a particular
-moment in your chess game is a node in a tree - but it is.
+Zum Beispiel, es ist nicht sofort offensichtlich, wenn du ein Schachprogramm schreibst,
+dass ein bestimmter Moment deiner Partie ein Knoten in einem Baum ist - aber es ist
+so.
 
-The point for search problems is that we need to be able to get all the "next" nodes to
-look at. This is called node expansion. For example, think of a navigation system. You
-are at point A, let's say, Picadilly Circus in London. You want your software to know
-all the next intersections you can get from there.
+Der Punkt für Suchprobleme ist, dass wir die Möglichkeit haben müssen, die "nächsten"
+Knoten zu finden, die wir uns ansehen müssen. Das nennt man Knotenexpansion. Zum Beispiel,
+denkt an ein Navigationssystem. Du bist an Punkt A, sagen wir, Picadilly Circus in London.
+Du möchtest, dass deine Software weiß, welche nächsten Kreuzungen man von dort aus
+erreichen kann.
 
-This time we can put the new functional programming goodness of Java 8 to proper
-use:
+Diesmal können wir all die neuen tollen Funktionen in Java 8 für funktionale Programmierung
+gut verwenden:
 
 ```java
 Function<E, List<E>> expandFn;
 ```
 
-That could be anything and doesn't ask us to define big models just to use our
-spiffy new iterator.
+Das könnte alles Mögliche sein und hilft uns, dass wir keine großen Ansprüche an die
+Modelle, die wir durchtraversieren wollen, stellen müssen, nur damit Leute unseren
+tollen neuen Iterator verwenden können.
 
-Time to put all that theory to the test.
+Zeit, all die Theorie in die Praxis umzusetzen.
 
-## Iterator - version 1
+## Iterator - Version 1
 
-Putting it all together, the iterator looks like this:
+Wenn wir das alles zusammen packen, dann sieht der Iterator wie folgt aus:
 
 ```java
 public class QueuedIterator<E> implements QueueAdapter<E> {
@@ -297,34 +302,36 @@ public class QueuedIterator<E> implements QueueAdapter<E> {
 }
 ```
 
-Notice that this class implements QueueAdapter as well. It is, after all,
-an iterator *and* an iterator that accepts more elements (expanded notes in
-this case). So, if it quacks like a duck...
+Beachtet, dass diese Klasse auch wieder QueueAdapter implementiert. Es ist ja
+eben ein Iterator *und* ein Iterator, dem man während des Betriebs weitere
+Elemente hinzufügen kann (expandierte Knoten in diesem Fall). Also, wenn
+es quackt wie eine Ente...
 
-The rest is rather straight forward. The only difference to the normal
-behaviour of our queues is that for every node, the expansion function is
-called and the expanded nodes are added to the queue.
+Der Rest ist eigentlich recht einfach. Der einzige Unterschied zu unserem
+normalen Queue-Verhalten ist, dass für jeden Knoten die Expansionsfunktion
+verwendet wird um die expandierten Knoten zu finden und diese der Queue
+hinzuzufügen.
 
-Is this already closed for modification?
+Ist das bereits abgeschlossen für Modifikation?
 
-Not quite. There is something still missing.
+Noch nicht ganz. Es fehlt noch was.
 
-In every graph search, you need to be careful to make sure that you do
-not run into circles. And if you are looking for your next chess move, you
-may want to limit the search depth so that your computer doesn't work all
-night to solve all possible chess positions.
+In jeder Graphensuche muss man vorsichtig sein, dass man nicht in Zyklen
+läuft. Und wenn du nach dem nächsten Schachzug suchst, dann möchtest
+du vermutlich die Suchtiefe limitieren, damit dein Rechner nicht
+die ganze Nacht alle möglichen Schachpositionen berechnet.
 
-In other words, we may want to limit the iteration later. On the one hand,
-we may want to exclude nodes we already visited, on the other we may want
-to prune our search tree and cut off branches we know are irrelevant.
+Mit anderen Worten, wir wollen vielleicht die Iteration später begrenzen.
+Einerseits wollen wir bereits besuchte Knoten ausschließen, andererseits
+möchten wir unseren Suchbaum stutzen und Äste absägen, die jetzt
+irrelevant geworden sind.
 
-To translate this to our iterator: we may want to tell the iterator when
-a node should not be added to the queue.
+Um das in unseren Iterator zu übresetzen: wir möchten vielleicht dem Iterator
+sagen, wenn ein Knoten nicht der Queue hinzugefügt werden sollte.
 
-## Iterator - version 2
+## Iterator - Version 2
 
-This is rather easy and can be done with some functional goodness as
-well:
+Das ist recht einfach und kann wieder mit funktionalem Schnuffschnuff gemacht werden:
 
 ```java
 package de.grabarske.poirot.iterators.impl;
@@ -379,12 +386,12 @@ public class QueuedIterator<E> implements QueueAdapter<E> {
 }
 ```
 
-And here we are. The pruner is a predicate which returns true if a node should be pruned. The standard pruner always returns false and therefore allows all nodes
-to be added to the queue.
+Und das wäre es. Der Pruner ist ein Prädikat, das true zurück gibt, wenn ein Knoten abgeschnitten werden sollte. Der Default-Pruner gibt immer false zurück und
+erlaubt daher, dass alle Knoten in die Queue aufgenommen werden.
 
-## Convenience classes
+## Bequemlichkeitsklassen
 
-For depth-first iteration:
+Für Tiefensuche:
 
 ```java
 public class DepthFirstIterator<E> extends QueuedIterator<E> {
@@ -400,7 +407,7 @@ public class DepthFirstIterator<E> extends QueuedIterator<E> {
 }
 ```
 
-For breadth-first iteration:
+Für Breitensuche:
 
 ```java
 public class BreadthFirstIterator<E> extends QueuedIterator<E> {
@@ -416,7 +423,7 @@ public class BreadthFirstIterator<E> extends QueuedIterator<E> {
 }
 ```
 
-And finally for best-first iteration:
+Und schließlich für Best-First-Suche:
 
 ```java
 public class BestFirstIterator<E> extends QueuedIterator<E> {
@@ -432,7 +439,7 @@ public class BestFirstIterator<E> extends QueuedIterator<E> {
 }
 ```
 
-Let's test them:
+Lasst sie uns testen:
 
 ```java
 class BreadthFirstIteratorTest {
@@ -492,19 +499,20 @@ class BreadthFirstIteratorTest {
 }
 ```
 
-Writing the other tests and, more importantly, abstracting away what is the same for all the tests
-is left as an exercise for the reader.
+Das Schreiben der anderen Tests und, viel wichtiger, die Abstraktion von dem, was für alle Tests gleich ist,
+wird als Übung dem Leser überlassen.
 
-# The main points of this article
+# Die Hauptpunkte dieses Artikels
 
-I know. You are in a hurry. So let's recap quickly before we move on.
+Ich weiß. Du hast es eilig. Also lass uns schnell alles zusammenfassen, bevor es weitergeht.
 
-* The kind of search you are doing depends on the queue that works in the background
-* We can raise the abstraction to use this idea for any iteration or traversal of data structures and search structures, be they virtual or real
-* We can code an iterator in Java that uses an arbitrary queue and a pruner which is closed for modification but open for extension
+* Was für eine Scuhe du hast, hängt von der Queue ab, die im Hintergrund arbeitet
+* Wir können davon abstrahieren um zu einem Konzept für Iteration und Traversierung aller möglichen Datenstrukturen und Suchräumen zu kommen, egal ob virtuell oder real
+* Wir können einen Iterator in Java schreiben, der eine beliebige Queue verwendet und einen Pruner, die abgeschlossen für Veränderung aber offen für Erweiterung ist
 
-That should be all for now.
+Das sollte erst einmal alles sein.
 
-Next time, let us extend the iterator to allow for arbitrary searches, let us see how we can
-navigate graphs safely and efficiently and how to feed all that Java streams goodness, now that
-we have the basics out of the way.
+Lasst uns nächstes Mal den Iterator erweitern um beliebige Suchen zu unterstützen, lasst
+uns sehen, wie man Graphen sicher und effizient durchläuft und wie man all die schönen
+Java-Streams-Sachen bekommt, jetzt, wo wir uns um die Basics gekümmert haben.
+
