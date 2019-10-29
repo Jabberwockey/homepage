@@ -52,7 +52,7 @@ a perfect example for the principle
 
 We want algorithms like that. We want to have systems that can easily be extended with behaviour we need, while the main
 core algorithm is as closed as possible - as in: never needs to be touched by grabby, filthy little developer hands again,
-at least not in our lifetime - or at least until we quit and ran away from the code base as quickly as possible.
+at least not in our lifetime - or at least until we quit and run away from the code base as quickly as possible.
 
 However, rethinking this, it is apparent that the search idea doesn't even go far enough. It's good to be able to guide
 the traversal of a data structure with queues in general, without specifically looking for something. In other words:
