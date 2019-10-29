@@ -1,7 +1,7 @@
 ---
-categories: ["programming", "Lisp", "Java", "algorithms", "data structures", "queues"]
+categories: ["programming", "Lisp", "Java", "algorithms", "data structures", "queues", "search"]
 comments: true
-title: "Rethinking search and traversal - Part 1 - Cool things with Java"
+title: "Searching (Part 1)"
 date: "2019-10-29T14:31:00+01:00"
 slug: ""
 draft: ""
@@ -9,10 +9,94 @@ markup: mmark
 diagram: true
 ---
 
-One of the most mind-blowing things I learned at university was that the behaviour of
-a search can be determined by the kind of queue that is being used.
+Here are three things that I learned at uni that blew my mind:
 
-In other words, it was this skeleton for a general search:
+1. All searches are tree traversals
+2. All search strategies can be implemented by choosing the right queue
+3. Every (AI) problem can be expressed as a search
+
+Let's look at all three of these statements in turn.
+
+# All searches are tree traversals
+
+Let's look at a couple of examples for searches:
+
+1. Check whether an XML document contains a *node*-tag.
+2. Determine whether an array of *n* integers contains the integer *x*.
+3. Starting from Picadilly Circus in London, find the best route to Trafalgar Square.
+4. Given a set of things we know about the world, try to prove a statement *X*.
+
+For the XML document example, the search is obviously a tree traversal. After all,
+an XML document is a tree and, if push comes to shove, we need to check every single
+node in that tree. So we need to traverse the tree.
+
+The second example is not that intuitive, but remember that we have are interested
+in what we are looking at during a search. If the array is unordered, like this:
+
+5 8 1 10 11 3 9
+
+then we have to look at each element in turn. But that is the same as traversing
+a list. And a list is a special case of a tree. So in that example, too, we are
+talking about a tree traversal.
+
+This gets a bit more obvious when the array is sorted and we can use a smarter algorithm.
+
+If the array looks like this
+
+1 3 5 8 9 10 11
+
+and I'm wondering whether the number 10 is in the array, we can use the following algorithm for finding
+a value $$x$$ in a sorted array $$arr$$ with $$n$$ elements:
+
+1. Set $$a := 0$$ and $$b := n - 1$$
+2. If $$x < arr[a]$$ or $$x > arr[b]$$ then $$x$$ is not in $$arr$$. End.
+3. Set $$c := \lceil \frac{b-a}{2} \rceil$$
+4. If $$x == arr[c]$$ then $$x$$ is in $$arr$$ at position $$c$$. End.
+5. If $$x < arr[c]$$ then set $$b := c - 1$$ and go to step 2.
+6. If $$x > arr[c]$$ then set $$a := c + 1$$ and go to step 2.
+
+This may not look like a tree at first, until we write down the possible order of nodes that are examined:
+
+```mermaid
+graph TD;
+  8-->3;
+  8-->10;
+  3-->1;
+  3-->5;
+  10-->9;
+  10-->11;
+```
+
+If $x$ is bigger than 8, we go down the right branch, otherwise the left branch, and so forth.
+
+This gives us a time complexity of $$O(log(n))$$ - the height of a tree.
+
+Alright, but what about our satnav example? I mean, we are talking about a complicated graph there.
+
+Yes, but remember that when searching in graphs, we usually avoid circles. So we are looking for paths,
+starting from a start node that do not have cycles - in other words, we are looking for a tree. And we
+are looking for that tree by walking through the graph.
+
+So, even if we don't have an explicite data structure called a tree, every search is a tree traversal -
+of a so-called search tree.
+
+# All search strategies can be implemented by choosing the right queue
+
+As you may recall, the three main types for search strategies are:
+
+1. Depth-first search
+2. Breadth-first search
+3. Best-first search
+
+The first tries to dig deep and favours going down new paths before looking at other nodes.
+The second one tries to look at all nodes of the same distance from the root node before going deeper.
+And the third one looks at the most promising node first, whatever that one is.
+
+My mind was blown when I learned that all of these searches can be implemented by the same
+search algorithm if it uses a queue to keep track of all nodes that have yet to be examined
+and if you choose the correct type of queue for the strategy you want.
+
+Back then I was big into Lisp programming and this is what it looked like there:
 
 ```lisp
 (defun search (start expand-fn goal-fn enqueue-fn dequeue-fn)
@@ -24,484 +108,214 @@ In other words, it was this skeleton for a general search:
 		  (mapcar enqueue-fn (funcall expand-fn elm)))))
 ```
 
-For all you people who think that Lisp is just a random number of
-parens (and for the Scheme programmers who think that Common Lisp
-is just unelegant), here's what this kind of code does:
+You get the different search strategies by plugging in the correct queue:
 
-1. It takes functions to enqueue and dequeue elements from, well, a queue.
-2. It takes functions to derive further nodes to be visited and a function to tell whether a node is a goal or not.
-3. While the goal hasn't been found yet, it expands nodes and enqueues those children, using the queue as the sole source for the traversal.
+Search strategy | Type of Queue
+----------------|----------------
+Depth-first     | Stack
+Breadth-first   | Queue
+Best-first      | Priority Queue
 
-Now: whether this is a depth-first search or a breadth-first search or a best-first search depends on the queue functions we
-passed to this piece of code.
+That means: you can implement a search algorithm and decide the correct strategy later, closing
+the algorithm early for modification, while its behaviour can still be modified.
 
-I.e.: if we use a stack (a FILO queue), then this function will carry out a depth-first search. If we use a regular queue (a FIFO queue), then
-this will be a breadth-first search. And if we use a priority queue, this will be a best-first search.
+Nice.
 
-That means: the main search algorithm is *independent* of the search strategy used! The behaviour is plugged in and can be exchanged.
+Of course, what's even nicer: tree traversal in general follows one of the three strategies.
+So this works even if we "just" want to walk the whole tree, graph or whatever structure we are
+looking at. We just need to select the correct queue.
 
-Yeah. Mind blown.
+# Every (AI) problem can be expressed as a search
 
-Of course, as a seasoned programmer (I think I can call myself that, I have the grey hair to prove it), I know that this is
-a perfect example for the principle
+This one takes a lot more explaining than the other two. For now, look at the fourth example.
+Imagine that everything a machine "knows" is set as formulas in its brain and now it needs
+to find the right knowledge to apply in a situation. We already phrased it the right way, it is
+a form of search.
 
-> Closed for modification, open for extension.
+The real proof takes some more time and effort - if you are interested, do tell me and I will
+try to put it in understandable terms
 
-We want algorithms like that. We want to have systems that can easily be extended with behaviour we need, while the main
-core algorithm is as closed as possible - as in: never needs to be touched by grabby, filthy little developer hands again,
-at least not in our lifetime - or at least until we quit and run away from the code base as quickly as possible.
+# Let's see some code
 
-However, rethinking this, it is apparent that the search idea doesn't even go far enough. It's good to be able to guide
-the traversal of a data structure with queues in general, without specifically looking for something. In other words:
-the search itself is just an application of a broader algorithm having to do with iteration.
+Alright, enough theory. Let's see how we can use all this in, let's say, Java.
 
-Let's see how we can apply this in Java programming. Don't worry, I will do that in other languages as well.
-
-# Java - Queued Iterator
-
-The newer Java versions introduced the Java Streams API which is the "new shit" and used in a frenzy by the same people
-who told me years earlier, that functional programming doesn't have any practical applications whatsoever (to be fair, it
-didn't have any in Java at that time, but I digress).
-
-Don't get me wrong, the Java Streams API and lambda expressions and all the new fancy stuff is a step in the right
-direction and makes for much clearer and concise programming, despite all the nay-sayers.
-
-But one should remember that at its core, there is a rather old class at work that is used for iterations since
-Java 5 and 6: Iterator. Yeah, the one that powers your good old for-loops like
+First let us define an interface for our TreeIterator. As it is both an Iterator, but also a consumer
+of more items to consider, the interface is quite straight forward to write:
 
 ```java
-List<String> strs;
-// ...
-for (String str : strs) {
-  // ...
-}
-```
+package de.grabarske.poirot.iterators.api;
 
-Or, worse even, the manual while-loops done by some old geezers, like
+import java.util.Iterator;
+import java.util.function.Consumer;
 
-```java
-Iterator<String> iterator = strs.iterator();
-while (iterator.hasNext()) {
-  String current = iterator.next();
-}
-```
-
-You know. The really boring, really old-school stuff.
-
-But bear with me. We'll get to the new, cool, hip stuff in due time.
-
-## A queue by any other name?
-
-First I need to rant a little about Java. Or, more specifically, about
-certain design decisions done by Java.
-
-In my Lisp code above, we only needed to tell my search function which
-enqueue and dequeue functions we needed to work properly. That is because
-in Lisp, queues and stacks and priority queues basically work the same,
-the only difference is, which element the dequeue function returned.
-
-While modern Java versions allow passing function arguments as well, it's
-not that simple, as the behaviour is slightly different.
-
-You see, Java knows PriorityQueue, Stack and a flavour of Queue, let's say
-a simple LinkedList (as that implements the Queue interface as well).
-
-Enqueueing is easy enough. All of these classes support the "add()" function.
-You could use "push()" for Stack, but it doesn't do anything different from
-"add()".
-
-Dequeueing however is a different beast. For Queue it's "poll()". And if the
-queue is empty, that will return null. For Stack it's "pop()". And if the
-stack is empty, it will throw an exception.
-
-That is a bit annoying. If we want our iteration / traversal mechanism to
-be agnostic of the used queue, all the queues should behave the same way and
-have the same API.
-
-Ok, I admit it, that wasn't that much of a rant. Not in the mood.
-
-Thankfully, the preferred style in Java is still OOP and there is a simple
-solution in our arsenal of design patterns: adapters. We define how this uniform
-API is supposed to look like and then we design classes that bridge the gap
-between the two different behaviours and APIs.
-
-For queues, we pretty much need what the ADT of queues asks for:
-
-```java
-public interface QueueAdapter<T> {
-	boolean isEmpty();
-	T dequeue();
-	void enqueue(T item);
-}
-```
-
-The keen reader will have noticed that the first two functions look awfully
-familiar. They are actually exactly what an Iterator gives us! Looking at the ADT,
-we can say that a queue is nothing else but an iterator that allows for additional
-elements to be traversed to be added on the fly.
-
-What a way to think about that! To reflect this new idea, let's rewrite the interface
-to tell other programmers about this idea of ours:
-
-```java
-public interface QueueAdapter<T> extends Iterator<T>, Consumer<T> {
-}
-```
-
-Does that sound correct?
-
-A queue is for traversing through "waiting" crowds, so yes, it sounds apt to call it an iterator.
-But a queue also accepts new elements all the time. So it is also a consumer of items.
-
-Let's see how such an adapter could look like:
-
-```java
-public class StackAdapterImpl<T> implements QueueAdapter<T> {
-
-	private Stack<T> stack = new Stack<>();
-	
-	public boolean hasNext() {
-		return !stack.empty();
-	}
-
-	public T next() {
-		return stack.empty() ? null : stack.pop();
-	}
-
-	public void accept(T arg0) {
-		stack.push(arg0);
-	}
-	
-}
-```
-
-And for queues:
-
-```java
-public class QueueAdapterImpl<T> implements QueueAdapter<T> {
-
-	private LinkedList<T> queue = new LinkedList<>();
-	
-	@Override
-	public boolean hasNext() {
-		return !queue.isEmpty();
-	}
-
-	@Override
-	public T next() {
-		return queue.poll();
-	}
-
-	@Override
-	public void accept(T arg0) {
-		queue.add(arg0);
-	}
+public interface TreeIterator<T> extends Iterator<T>, Consumer<T> {
 
 }
 ```
 
-And finally for priority queues:
-
-```java
-public class PriorityQueueAdapterImpl<T> implements QueueAdapter<T> {
-
-	private PriorityQueue<T> queue = new PriorityQueue<>();
-	
-	@Override
-	public boolean hasNext() {
-		return !queue.isEmpty();
-	}
-
-	@Override
-	public T next() {
-		return queue.poll();
-	}
-
-	@Override
-	public void accept(T arg0) {
-		queue.add(arg0);
-	}
-
-}
-```
-
-Gna, I hate copy \& paste programming, but in this case, there are no good ways around it
-(if you have an idea, pop me a line). Thankfully, this is the only bit of that we need
-to do.
-
-Now that we have our queue adapters, we need to talk about nodes.
-
-## Nodes
-
-A node in a search problem can be anything. It can be an actual node as in a tree or
-a graph, but it can also be an abstract node as in: a specific position in our
-search tree.
-
-For example, it is not apparent when you are writing a chess program that a particular
-moment in your chess game is a node in a tree - but it is.
-
-The point for search problems is that we need to be able to get all the "next" nodes to
-look at. This is called node expansion. For example, think of a navigation system. You
-are at point A, let's say, Picadilly Circus in London. You want your software to know
-all the next intersections you can get from there.
-
-This time we can put the new functional programming goodness of Java 8 to proper
-use:
-
-```java
-Function<E, List<E>> expandFn;
-```
-
-That could be anything and doesn't ask us to define big models just to use our
-spiffy new iterator.
-
-Time to put all that theory to the test.
-
-## Iterator - version 1
-
-Putting it all together, the iterator looks like this:
-
-```java
-public class QueuedIterator<E> implements QueueAdapter<E> {
-
-	private QueueAdapter<E> queue;
-	private Function<E, List<E>> expandFn;
-	
-	public QueuedIterator(E startNode, Function<E, List<E>> expandFn, QueueAdapter<E> queue) {
-		this.queue = queue;
-		this.expandFn = expandFn;
-		accept(startNode);
-	}
-	
-	@Override
-	public boolean hasNext() {
-		return queue.hasNext();
-	}
-
-	@Override
-	public E next() {
-		E current = queue.next();
-		if (current != null)
-			expandFn.apply(current).forEach(this::accept);
-		return current;
-	}
-
-	@Override
-	public void accept(E arg0) {
-		this.queue.accept(arg0);
-	}
-
-}
-```
-
-Notice that this class implements QueueAdapter as well. It is, after all,
-an iterator *and* an iterator that accepts more elements (expanded notes in
-this case). So, if it quacks like a duck...
-
-The rest is rather straight forward. The only difference to the normal
-behaviour of our queues is that for every node, the expansion function is
-called and the expanded nodes are added to the queue.
-
-Is this already closed for modification?
-
-Not quite. Something is still missing.
-
-In every graph search, you need to be careful to make sure that you do
-not run into circles. And if you are looking for your next chess move, you
-may want to limit the search depth so that your computer doesn't work all
-night to solve all possible chess positions.
-
-In other words, we may want to limit the iteration later. On the one hand,
-we may want to exclude nodes we already visited, on the other we may want
-to prune our search tree and cut off branches we know are irrelevant.
-
-To translate this to our iterator: we may want to tell the iterator when
-a node should not be added to the queue.
-
-## Iterator - version 2
-
-This is rather easy and can be done with some functional goodness as
-well:
+Now for  the class itself:
 
 ```java
 package de.grabarske.poirot.iterators.impl;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
-import de.grabarske.poirot.queues.api.QueueAdapter;
+import de.grabarske.poirot.iterators.api.TreeIterator;
 
 /**
- * An iterator using a queue as a backend, expanding nodes using an expansion function.
+ * An iterator to traverse a tree - virtual or real. The important thing is that for every point
+ * of the traversal, there needs to be a clear idea what nodes are "next" nodes. And also there
+ * needs to be a strategy in what order the nodes should be visited. The former is done
+ * by node expansion and an expansion function, the latter by choosing the right data structure,
+ * i.e., the right queue.
  * 
  * @author Jens Grabarske
  *
  */
-public class QueuedIterator<E> implements QueueAdapter<E> {
+public class TreeIteratorImpl<T, Q extends Collection<T>> implements TreeIterator<T> {
 
-	private QueueAdapter<E> queue;
-	private Function<E, List<E>> expandFn;
-	private Function<E, Boolean> prunerFn;
+	private Q queue;
+	private Function<Q, T> dequeueFn;
+	private Function<T, ? extends Iterable<T>> expandFn;
+	private Predicate<T> pruner;
 	
-	public QueuedIterator(E startNode, Function<E, List<E>> expandFn, Function<E, Boolean> pruner, QueueAdapter<E> queue) {
+	/**
+	 * The main constructor for a tree iterator.
+	 * 
+	 * @param startNode  The node where the iterator should start.
+	 * @param expandFn   A function that, given a node, returns the most promising "next" nodes.
+	 * @param queue      The queue to be used
+	 * @param dequeueFn  A function for dequeuing the next element (depends on the queue, therefore a parameter).
+	 * @param pruner     A predicate that may veto the inclusion of a node into the queue for pruning a search
+	 */
+	public TreeIteratorImpl(T startNode, Function<T, ? extends Iterable<T>> expandFn, Q queue, Function<Q, T> dequeueFn, Predicate<T> pruner) {
+		super();
 		this.queue = queue;
+		this.dequeueFn = dequeueFn;
 		this.expandFn = expandFn;
-		this.prunerFn = pruner;
+		this.pruner = pruner;
 		accept(startNode);
 	}
-	
-	public QueuedIterator(E startNode, Function<E, List<E>> expandFn, QueueAdapter<E> queue) {
-		this(startNode, expandFn, a -> false, queue);
-	}
-	
-	@Override
-	public boolean hasNext() {
-		return queue.hasNext();
+
+	/**
+	 * The constructor for a tree iterator without a pruner.
+	 * 
+	 * @param startNode  The node where the iterator should start.
+	 * @param expandFn   A function that, given a node, returns the most promising "next" nodes.
+	 * @param queue      The queue to be used
+	 * @param dequeueFn  A function for dequeuing the next element (depends on the queue, therefore a parameter).
+	 */
+	public TreeIteratorImpl(T startNode, Function<T, ? extends Iterable<T>> expandFn, Q queue, Function<Q, T> dequeueFn) {
+		this(startNode, expandFn, queue, dequeueFn, a -> false);
 	}
 
-	@Override
-	public E next() {
-		E current = queue.next();
+	public boolean hasNext() {
+		return !queue.isEmpty();
+	}
+
+	public T next() {
+		T current = dequeueFn.apply(queue);
 		if (current != null)
 			expandFn.apply(current).forEach(this::accept);
 		return current;
 	}
 
-	@Override
-	public void accept(E item) {
-		if (!prunerFn.apply(item))
-		   this.queue.accept(item);
+	public void accept(T arg0) {
+		if (!pruner.test(arg0))
+			this.queue.add(arg0);
 	}
-
 }
 ```
 
-And here we are. The pruner is a predicate which returns true if a node should be pruned. The standard pruner always returns false and therefore allows all nodes
-to be added to the queue.
+Here we go. This iterator can be used to perform any tree traversal we need - for searches or for walking for a tree.
 
-## Convenience classes
-
-For depth-first iteration:
+Of course, it has the constructor signature from hell. Let us use some convenience classes to narrow the
+functions we actually want down:
 
 ```java
-public class DepthFirstIterator<E> extends QueuedIterator<E> {
+package de.grabarske.poirot.iterators.impl;
 
-	public DepthFirstIterator(E startNode, Function<E, List<E>> expandFn, Function<E, Boolean> pruner) {
-		super(startNode, expandFn, pruner, new StackAdapterImpl<>());
+import java.util.Stack;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+/**
+ * A tree iterator that uses depth-first traversal.
+ * 
+ * @author Jens Grabarske
+ *
+ */
+public class TreeIteratorDepthFirstImpl<T> extends TreeIteratorImpl<T, Stack<T>> {
+
+	public TreeIteratorDepthFirstImpl(T startNode, Function<T, ? extends Iterable<T>> expandFn, Predicate<T> pruner) {
+		super(startNode, expandFn, new Stack<T>(), s -> s.isEmpty() ? null : s.pop(), pruner);
 	}
 
-	public DepthFirstIterator(E startNode, Function<E, List<E>> expandFn) {
+	public TreeIteratorDepthFirstImpl(T startNode, Function<T, ? extends Iterable<T>> expandFn) {
 		this(startNode, expandFn, a -> false);
 	}
 
 }
 ```
 
-For breadth-first iteration:
+For breadth-first search:
 
 ```java
-public class BreadthFirstIterator<E> extends QueuedIterator<E> {
+package de.grabarske.poirot.iterators.impl;
 
-	public BreadthFirstIterator(E startNode, Function<E, List<E>> expandFn, Function<E, Boolean> pruner) {
-		super(startNode, expandFn, pruner, new QueueAdapterImpl<>());
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+/**
+ * An iterator for breadth-first search.
+ * 
+ * @author Jens Grabarske
+ *
+ */
+public class TreeIteratorBreadthFirstImpl<T> extends TreeIteratorImpl<T, Queue<T>> {
+
+	public TreeIteratorBreadthFirstImpl(T startNode, Function<T, ? extends Iterable<T>> expandFn, Predicate<T> pruner) {
+		super(startNode, expandFn, new LinkedList<T>(), q -> q.poll(), pruner);
 	}
 
-	public BreadthFirstIterator(E startNode, Function<E, List<E>> expandFn) {
+	public TreeIteratorBreadthFirstImpl(T startNode, Function<T, ? extends Iterable<T>> expandFn) {
 		this(startNode, expandFn, a -> false);
 	}
-
 }
 ```
 
-And finally for best-first iteration:
+And, last but not least, for best-first search:
 
 ```java
-public class BestFirstIterator<E> extends QueuedIterator<E> {
+package de.grabarske.poirot.iterators.impl;
 
-	public BestFirstIterator(E startNode, Function<E, List<E>> expandFn, Function<E, Boolean> pruner) {
-		super(startNode, expandFn, pruner, new PriorityQueueAdapterImpl<>());
+import java.util.PriorityQueue;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
+/**
+ * An iterator for best-first tree traversal.
+ * 
+ * @author Jens Grabarske
+ *
+ */
+public class TreeIteratorBestFirstImpl<T> extends TreeIteratorImpl<T, PriorityQueue<T>> {
+
+	public TreeIteratorBestFirstImpl(T startNode, Function<T, ? extends Iterable<T>> expandFn, Predicate<T> pruner) {
+		super(startNode, expandFn, new PriorityQueue<>(), p -> p.poll(), pruner);
 	}
 
-	public BestFirstIterator(E startNode, Function<E, List<E>> expandFn) {
+	public TreeIteratorBestFirstImpl(T startNode, Function<T, ? extends Iterable<T>> expandFn) {
 		this(startNode, expandFn, a -> false);
 	}
-
-}
-```
-
-Let's test them:
-
-```java
-class BreadthFirstIteratorTest {
-
-	private TreeNode<Integer> startNode;
-	
-	@BeforeEach
-	void init() {
-		startNode = TreeNode.as(8, TreeNode.as(2, TreeNode.as(1)),
-				                   TreeNode.as(3, TreeNode.as(9, TreeNode.as(4, TreeNode.as(10)), TreeNode.as(11))));
-	}
-	
-	private void assertIteratorOrder(Iterator<TreeNode<Integer>> iterator, Integer...integers) {
-		for (int i : integers) {
-			int res = iterator.next().getItem();
-			assertEquals(i, res);
-		}
-	}
-	
-	@Test
-	void testOrder() {
-		Iterator<TreeNode<Integer>> iterator = new BreadthFirstIterator<>(startNode, node -> node.getChildren());
-		assertIteratorOrder(iterator, 8, 2, 3, 1, 9, 4, 11, 10);
-	}
-
-	@Test
-	void testPruning() {
-		Iterator<TreeNode<Integer>> iterator = new BreadthFirstIterator<>(startNode, node -> node.getChildren(), n -> n.getItem() % 2 == 1);
-		assertIteratorOrder(iterator, 8, 2);		
-	}
-	
-
-	public static class TreeNode<T> {
-		private T item;
-		private List<TreeNode<T>> children;
-		
-		public TreeNode(T item, List<TreeNode<T>> children) {
-			this.item = item;
-			this.children = children;
-		}
-
-		public T getItem() {
-			return item;
-		}
-
-		public List<TreeNode<T>> getChildren() {
-			return children;
-		}
-		
-		@SafeVarargs
-		public static <T> TreeNode<T> as(T item, TreeNode<T>...nodes) {
-			return new TreeNode<T>(item, Arrays.asList(nodes));
-		}
-		
-	}
 	
 }
 ```
 
-Writing the other tests and, more importantly, abstracting away what is the same for all the tests
-is left as an exercise for the reader.
-
-# The main points of this article
-
-I know. You are in a hurry. So let's recap quickly before we move on.
-
-* The kind of search you are doing depends on the queue that works in the background
-* We can raise the abstraction to use this idea for any iteration or traversal of data structures and search structures, be they virtual or real
-* We can code an iterator in Java that uses an arbitrary queue and a pruner which is closed for modification but open for extension
-
-That should be all for now.
-
-Next time, let us extend the iterator to allow for arbitrary searches, let us see how we can
-navigate graphs safely and efficiently and how to feed all that Java streams goodness, now that
-we have the basics out of the way.
+Here we have it, the first step for a general search framework that we can
+work with. Basically traversal, but as we learned, every search is traversal,
+so this gets us up and running really fast.
