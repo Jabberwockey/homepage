@@ -63,7 +63,7 @@ social:
 - icon: facebook
   icon_pack: fab
   link: https://www.facebook.com/Jabberwockey
-- icon: fa-instagram
+- icon: instagram
   icon_pack: fab
   link: https://www.instagram.com/vorpalcoder/
 
