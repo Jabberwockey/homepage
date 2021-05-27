@@ -18,9 +18,13 @@ markup: mmark
 Die Problembeschreibung findet sich auf der oben verlinkten Webseite. Hier als Zitat:
 
 > Each army consists of many different monsters. Each monster has a strength that can be described by a positive integer. (The larger the value, the stronger the monster.)
+>
 > The war will consist of a series of battles. In each battle, the weakest of all the monsters that are still alive is killed.
+>
 > If there are several weakest monsters, but all of them in the same army, one of them is killed at random. If both armies have at least one of the weakest monsters, a random weakest monster of MechaGodzilla’s army is killed.
+>
 > The war is over if in one of the armies all monsters are dead. The dead army lost, the other one won.
+>
 > You are given the strengths of all the monsters. Find out who wins the war.
 
 # Eingabe
