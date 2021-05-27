@@ -23,7 +23,7 @@ bio: Softwareentwickler bei Tag, Schriftsteller bei Nacht und Abenteurer in mein
 interests:
 - Softwareentwicklung
 - Künstliche Intelligenz
-- [Schriftstellerei](https://geschichten.grabarske.de/)
+- Schriftstellerei
 - Philosophie
 - LARP
 - Fotografie

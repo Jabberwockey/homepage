@@ -79,7 +79,7 @@ user_groups:
 - Visitors
 ---
 
-Jens Grabarske is a software developer and author in Duisburg, Germany. His interests include artificial intelligence,
+Jens Grabarske is a software developer and [author](https://stories.grabarske.de/) in Duisburg, Germany. His interests include artificial intelligence,
 software engineering in general, languages, fantasy, science fiction, LARP and philosophy, not always in that order.
 
 In the past, he has worked as a freelance developer and trainer.

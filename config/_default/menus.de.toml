@@ -10,10 +10,15 @@
     weight = 10
 
 [[main]]
-    name = "Artikel"
+    name = "Fachartikel"
     identifier = "posts"
     url = "#posts"
     weight = 20
+
+[[main]]
+    name = "Texte"
+    url = "https://geschichten.grabarske.de/"
+    weight = 25
 
 [[main]]
     name = "Projekte"
