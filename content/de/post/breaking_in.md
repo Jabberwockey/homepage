@@ -6,6 +6,7 @@ slug: ""
 draft: ""
 markup: mmark
 diagram: true
+draft: true
 ---
 
 *Ich liebe es, kleine Programmieraufgaben und Kopfnüsse zu knacken. Glücklicherweise gibt es sehr viele Webseiten, auf denen man solche findet.*
