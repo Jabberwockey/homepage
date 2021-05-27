@@ -23,7 +23,7 @@ bio: Softwareentwickler bei Tag, Schriftsteller bei Nacht und Abenteurer in mein
 interests:
 - Softwareentwicklung
 - Künstliche Intelligenz
-- Schriftstellerei
+- [Schriftstellerei](https://geschichten.grabarske.de/)
 - Philosophie
 - LARP
 - Fotografie
@@ -79,7 +79,7 @@ user_groups:
 - Visitors
 ---
 
-Jens Grabarske ist ein Softwareentwickler und Autor in Duisburg, Deutschland. Er interessiert sich für Künstliche
+Jens Grabarske ist ein Softwareentwickler und [Autor](https://geschichten.grabarske.de/) in Duisburg, Deutschland. Er interessiert sich für Künstliche
 Intelligenz, Softwareentwicklung im Allgemeinen, Sprachen, Fantasy, Science Fiction, Liverollenspiel und
 Philosophie, nicht notwendigerweise in dieser Reihenfolge.
 
