@@ -178,7 +178,7 @@ languages:
 
 ## Software developer, writer, trainer
 
-I'm employed as a software architect at Thyssenkrupp Steel Europe AG. Looking back on a long career as a software developer starting with 1997, I've also conducted many successful training programmes to teach other programmers in many different skills, including:
+I'm employed as a software architect at Thyssenkrupp Steel Europe AG. Looking back on a long career as a software developer starting 1997, I've also conducted many successful training programmes to teach other developers in many different skills, including:
 - Java and associated technologies like Jakarta EE, Spring Boot, Maven, Gradle, etc.
 - Python and associated technologies
-- Other programming languages
+- General software development and algorithms
