@@ -42,45 +42,45 @@ profiles:
     url: https://www.instagram.com/vorpalcoder/
 
 education:
-  - area: Diplom Informatik
-    institution: FernUniversität Hagen
+  - area: Diplom Informatik (equivalent to Master Computer Science)
+    institution: University of Hagen
     date_start: 2007-07-01
     date_end: 2011-09-30
     summary: |
-      - Abschlussarbeit über die Sicherheitsanforderungen in kooptiven verteilten sozialen Netzwerken.
-      - Nebenfach: Mathematik
-      - Vertiefung: Künstliche Intelligenz
-      - Gesamtnote 1,7
+      - Thesis on the security requirements for coopting social networks.
+      - Minor: mathematics
+      - Major: Artificial Intelligence
+      - Grade 1.7
     button:
-      text: 'Arbeit lesen (derzeit nicht verfügbar)'
+      text: 'Read work (currently unavailable)'
       url: 'https://example.com'
   - area: Vordiplom Informatik
-    institution: Universität Hamburg
+    institution: University of Hamburg
     date_start: 1997-10-01
     date_end: 2003-09-30
     summary: |
 
-      Nebenfächer Mathematik und Philosophie
+      Minors mathematics and philosophy
 work:
-  - position: Softwarearchitekt
+  - position: Software architect
     company_name: Thyssenkrupp Steel Europe AG
     company_url: 'https://www.thyssenkrupp-steel.com/'
     company_logo: ''
     date_start: 2017-01-01
     date_end: ''
     summary: |2-
-      Aufgaben beinhalten:
-      - Planung und Design zukünftiger Entwicklung im Enterprise-Umfeld
-      - Pflege und Betreuung von Bestands-Code
-  - position: IT-Trainer
+      Responsibilities include:
+      - Planning and design of current and future developments in an enterprise domain
+      - Maintenance and engineering on legacy systems and libraries
+  - position: IT trainer
     company_name: Lorenz & Pesavento, Ingenieurbüro für Informationstechnik GbR
     company_url: ''
     company_logo: ''
     date_start: 2007-06-01
     date_end:
     summary: |
-      Aufgaben beinhalten:
-      - Recherche, Planung und Durchführung von Schulungen zu Programmierthemen
+      Responsibilities include:
+      - Research, planning and holding of trainings in the field of development
 
 # Skills
 # Add your own SVG icons to `assets/media/icons/`
@@ -115,11 +115,11 @@ skills:
     color: '#eeac02'
     color_border: '#f0bf23'
     items:
-      - name: Wandern
+      - name: Hiking
         description: ''
         percent: 80
         icon: person-simple-walk
-      - name: Fahrradfahren
+      - name: Cycling
         description: ''
         percent: 100
         icon: bicycle
@@ -129,19 +129,19 @@ skills:
         icon: camera
 
 languages:
-  - name: Deutsch
+  - name: German
     percent: 100
-  - name: Englisch
+  - name: English
     percent: 100
-  - name: Schwedisch
+  - name: Swedish
     percent: 60
-  - name: Französisch
+  - name: French
     percent: 50
-  - name: Spanisch
+  - name: Spanish
     percent: 50
-  - name: Niederländisch
+  - name: Dutch
     percent: 50
-  - name: Portugiesisch
+  - name: Portuguese
     percent: 25
 # Awards.
 #   Add/remove as many awards below as you like.
@@ -176,6 +176,9 @@ languages:
 #  #---
 ---
 
-## Ich lebe in Duisburg
+## Software developer, writer, trainer
 
-Ich bin Softwareentwickler bei Thyssenkrupp Steel Europe, freiberuflicher IT-Trainer und Hobby-Autor.
+I'm employed as a software architect at Thyssenkrupp Steel Europe AG. Looking back on a long career as a software developer starting with 1997, I've also conducted many successful training programmes to teach other programmers in many different skills, including:
+- Java and associated technologies like Jakarta EE, Spring Boot, Maven, Gradle, etc.
+- Python and associated technologies
+- Other programming languages

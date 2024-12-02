@@ -11,10 +11,9 @@ I often get asked about what software or hardware I use, so this page will serve
 
 ## Editor + Terminal
 
-- [Visual Studio Code](https://code.visualstudio.com/) is my current editor
+- [Visual Studio Code](https://code.visualstudio.com/) is one of my current editors
 - Chrome is my main browser
-- iTerm2 is my terminal
 
 ## Desktop Apps
 
-- Better Touch Tool for window management and custom keyboard shortcuts
+- Notion for TODO lists and others

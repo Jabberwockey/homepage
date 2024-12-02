@@ -6,8 +6,8 @@
 en:
   languageCode: en-uk
 
-de:
-  languageCode: de-de
+#de:
+#  languageCode: de-de
   # Uncomment for multi-lingual sites, and move English content into `en` sub-folder.
   #contentDir: content/en
 
