@@ -143,7 +143,7 @@ Such an easy proof and such a mindblowing equivalence. All squares can be compos
 With all that under our belt, the proof of the original pyramid is easy. Let's say that *P(x)* is the result of the
 function we are supposed to write, *S(x)* is the Gauß sum of x and *T(x)* is the sum of the first x odds, then it's clear from the construction, that
 the number of odds in a pyramid of height n is *T(S(n))* - the sum of the first S(n) odds. And if we just want to count the nth row, then it's
-*P(n) = T(S(n)) - T(S(n-1))*
+*P(n) = T(S(n)) - T(S(n-1))*.
 
 {{< math >}}
 P(n) = T(S(n)) - T(S(n-1)) = S(n)² - S(n-1)² = \frac{n²\cdot(n + 1)²}{4} - \frac{n²\cdot(n - 1)²}{4} = \frac{n^4 + 2n³ + n² - n^4 + 2n³ - n²}{4} = \frac{4n³}{4} = n³ \square
