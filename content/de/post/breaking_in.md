@@ -4,7 +4,6 @@ title: "Programmieraufgabe 'Breaking in'"
 date: 2021-05-27T19:41:09+02:00
 slug: ""
 draft: ""
-markup: mmark
 diagram: true
 draft: true
 ---

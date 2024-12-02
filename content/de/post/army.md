@@ -4,7 +4,6 @@ title: "Programmieraufgabe 'Army Strength'"
 date: 2021-05-27T17:21:09+02:00
 slug: ""
 draft: ""
-markup: mmark
 ---
 
 *Ich liebe es, kleine Programmieraufgaben und Kopfnüsse zu knacken. Glücklicherweise gibt es sehr viele Webseiten, auf denen man solche findet.*

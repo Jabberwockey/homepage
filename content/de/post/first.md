@@ -5,7 +5,6 @@ title: "Umzug nach Netlify"
 date: "2019-10-27T11:31:00+01:00"
 slug: ""
 draft: ""
-markup: mmark
 diagram: true
 ---
 
