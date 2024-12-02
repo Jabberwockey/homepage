@@ -69,49 +69,39 @@ how quick the boy came up with the answer - he didn't add it all up, of course, 
 He reasoned as follows: if you write the whole sum from smallest to largest and underneath it from largest to smallest, adding all the summands individually,
 then you have 100 times 101. But as you added the sum twice, you just take half of that and that's the result:
 
-```latex
-{{</* math */>}}
+{{< math >}}
 ~~1 + ~~2 + ~~3 + \ldots + 100\\
 100 + ~99 + ~98 + \ldots + ~~1\\
 \hline
 101 + 101 + 101 + \ldots + 101\\
 = 100 \cdot 101
-{{</* /math */>}}
-```
+{{< /math >}}
 
 #### Proof by induction
 
-```latex
-{{</* math */>}}
+{{< math >}}
 \sum_{i = 1}^{n \in \mathds{N}} i =^? \frac{n \cdot (n + 1)}{2}
-{{</* /math */>}}
-```
+{{< /math >}}
 
 **Basis**
 
-```latex
-{{</* math */>}}
+{{< math >}}
 \sum_{i = 1}^1 i = 1 = 1 \cdot \frac{2}{2} \square
-{{</* /math */>}}
-```
+{{< /math >}}
 
 **Anchor**
 
 Assume, that the formula holds for all numbers up to n.
 
-```latex
-{{</* math */>}}
+{{< math >}}
 \sum_{i=1}^n i = \frac{n \cdot (n + 1)}{2}
-{{</* /math */>}}
-```
+{{< /math >}}
 
 **Step**
 
-```latex
-{{</* math */>}}
+{{< math >}}
 \sum_{i = 1}^{n + 1} i = (n + 1) + \sum_{i = 1}^n i = (n + 1) + \frac{n \cdot (n + 1)}{2} = \frac{(n + 2) \cdot (n + 1)}{2} \square
-{{</* /math */>}}
-```
+{{< /math >}}
 
 ### Sum of odd numbers
 
@@ -120,36 +110,29 @@ number theories. But it's just as easy to prove:
 
 #### Proof by induction
 
-```latex
-{{</* math */>}}
+{{< math >}}
 \sum_{i = 1}^{n \in \mathds{N}} 2i - 1 =^? n²
-{{</* /math */>}}
-```
+{{< /math >}}
+
 **Basis**
 
-```latex
-{{</* math */>}}
+{{< math >}}
 \sum_{i = 1}^{1} 2i - 1 = 2 \cdot 1 - 1 = 1 = 1² \square
-{{</* /math */>}}
-```
+{{< /math >}}
 
 **Anchor**
 
 Assume, that the formula holds for all numbers up to n.
 
-```latex
-{{</* math */>}}
+{{< math >}}
 \sum_{i = 1}^{n \in \mathds{N}} 2i - 1 = n²
-{{</* /math */>}}
-```
+{{< /math >}}
 
 **Step**
 
-```latex
-{{</* math */>}}
+{{< math >}}
 \sum_{i = 1}^{n + 1} 2i - 1 = 2((n + 1) + 1) + \sum_{i = 1}^{n} 2i - 1 = 2n + 4 + n² = (n + 1)² \square
-{{</* /math */>}}
-```
+{{< /math >}}
 
 #### Observation
 
@@ -162,11 +145,9 @@ function we are supposed to write, *S(x)* is the Gauß sum of x and *T(x)* is th
 the number of odds in a pyramid of height n is *T(S(n))* - the sum of the first S(n) odds. And if we just want to count the nth row, then it's
 *P(n) = T(S(n)) - T(S(n-1))*
 
-```latex
-{{</* math */>}}
+{{< math >}}
 P(n) = T(S(n)) - T(S(n-1)) = S(n)² - S(n-1)² = \frac{n²\cdot(n + 1)²}{4} - \frac{n²\cdot(n - 1)²}{4} = \frac{n^4 + 2n³ + n² - n^4 + 2n³ - n²}{4} = \frac{4n³}{4} = n³ \square
-{{</* /math */>}}
-```
+{{< /math >}}
 
 ## The program
 
