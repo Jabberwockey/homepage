@@ -13,8 +13,8 @@ marketing:
   seo:
     site_type: Person
     local_business_type: ''
-    org_name: ''
-    description: 'A highly-customizable Hugo blog theme powered by Hugo Blox Builder.'
+    org_name: 'Jens Grabarske'
+    description: 'Software developer, author, IT trainer, and magician in Duisburg, Germany'
     twitter: 'GetResearchDev'
   analytics:
     google_analytics: ''

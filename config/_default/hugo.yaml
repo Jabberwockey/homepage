@@ -3,8 +3,8 @@
 # Hugo Documentation: https://gohugo.io/getting-started/configuration/#all-configuration-settings
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
-title: Blog Pro (Hugo Theme) # Website name
-baseURL: 'https://example.com/' # Website URL
+title: Jens Grabarske # Website name
+baseURL: 'https://grabarske.de/' # Website URL
 
 ############################
 ## PAGE OPTIONS
@@ -34,7 +34,7 @@ cascade:
 ## LANGUAGE
 ############################
 
-defaultContentLanguage: en
+defaultContentLanguage: de
 hasCJKLanguage: false
 defaultContentLanguageInSubdir: false
 removePathAccents: true
